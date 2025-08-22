@@ -8,10 +8,10 @@ import * as dat from 'dat.gui'
 const gui = new dat.GUI()
 const world = {
   plane: {
-    width: 400,
-    height: 400,
-    widthSegments: 50,
-    heightSegments: 50
+    width: 184,
+    height: 146,
+    widthSegments: 38,
+    heightSegments: 29
   }
 }
 gui.add(world.plane, 'width', 1, 500).onChange(generatePlane)
@@ -43,7 +43,7 @@ function generatePlane() {
       array[i + 2] = z + (Math.random() - 0.5) * 3
     }
 
-    randomValues.push(Math.random() * Math.PI * 2)
+   randomValues.push(Math.random() * Math.PI * 2)
   }
 
   planeMesh.geometry.attributes.position.randomValues = randomValues
@@ -60,7 +60,7 @@ function generatePlane() {
     new THREE.BufferAttribute(new Float32Array(colors), 3)
   )
 }
-
+const raycaster = new THREE.Raycaster();
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -100,33 +100,94 @@ const backLight = new THREE.DirectionalLight(0xffffff, 1)
 backLight.position.set(0, 0, -1)
 scene.add(backLight)
 
-const mouse = {
-  x: undefined,
-  y: undefined
-}
 
 let frame = 0
+const mouse = {
+  x:undefined,
+  y:undefined
+}
 function animate() {
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
-
-  const {
-    array,
-    originalPosition,
-    randomValues
-  } = planeMesh.geometry.attributes.position
-  for (let i = 0; i < array.length; i += 3) {
-    // x
-    array[i] = originalPosition[i] + Math.cos(frame + randomValues[i]) * 0.01
-
-    // y
-    array[i + 1] =
-      originalPosition[i + 1] + Math.sin(frame + randomValues[i + 1]) * 0.001
+  raycaster.setFromCamera(mouse, camera)
+  frame=+0.01
+  const {array,originalPosition}=planeMesh.geometry.attributes.position
+  for(let i=0;i<array.length;i+3){
+    
   }
 
-  planeMesh.geometry.attributes.position.needsUpdate = true
+  const intersects = raycaster.intersectObject(planeMesh)
+  if(intersects.length > 0){
+    console.log("Inside intersects")
+    const {color} =intersects[0].object.geometry.attributes
 
+    //Vertice 1
+
+    color.setX(intersects[0].face.a,0.1)
+    color.setY(intersects[0].face.a,0.5)
+    color.setZ(intersects[0].face.a,1)
+
+
+
+
+    // //Vertice 2
+    color.setX(intersects[0].face.b,0.1)
+    color.setY(intersects[0].face.b,0.5)
+    color.setZ(intersects[0].face.b,1)
+
+
+    // //Vertice 3
+    color.setX(intersects[0].face.c,0.1)
+    color.setY(intersects[0].face.c,0.5)
+    color.setZ(intersects[0].face.c,1)
+
+    intersects[0].object.geometry.attributes.color.needsUpdate=true
+    const initialColor={
+      r:0,
+      g:0.19,
+      b:0.4
+    };
+    const hoverColor={
+      r:0.1,
+      g:0.5,
+      b:1
+    };
+    gsap.to(hoverColor, {
+      r:initialColor.r,
+      g:initialColor.g,
+      b:initialColor.b,
+      onUpdate:()=>{
+           //Vertice 1
+
+          color.setX(intersects[0].face.a,hoverColor.r)
+          color.setY(intersects[0].face.a,hoverColor.g)
+          color.setZ(intersects[0].face.a,hoverColor.b)
+
+
+
+
+          // //Vertice 2
+          color.setX(intersects[0].face.b,hoverColor.r)
+          color.setY(intersects[0].face.b,hoverColor.g)
+          color.setZ(intersects[0].face.b,hoverColor.b)
+
+
+          // //Vertice 3
+          color.setX(intersects[0].face.c,hoverColor.r)
+          color.setY(intersects[0].face.c,hoverColor.g)
+          color.setZ(intersects[0].face.c,hoverColor.b)
+
+          intersects[0].object.geometry.attributes.color.needsUpdate=true
+      }
+    })
+  }
   
 }
 
 animate()
+
+addEventListener('mousemove', (event) => {
+  mouse.x=( event.clientX / innerWidth) * 2 - 1 
+  mouse.y= -( event.clientY / innerHeight) * 2 + 1 
+})
+
