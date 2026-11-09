@@ -8,7 +8,7 @@ import * as dat from 'dat.gui'
 const gui = new dat.GUI()
 const world = {
   plane: {
-    width: 184,
+    width: 186,
     height: 146,
     widthSegments: 38,
     heightSegments: 29
@@ -41,7 +41,7 @@ function generatePlane() {
       array[i] = x + (Math.random() - 0.5) * 3
       array[i + 1] = y + (Math.random() - 0.5) * 3
       array[i + 2] = z + (Math.random() - 0.5) * 3
-    }
+     }
 
    randomValues.push(Math.random() * Math.PI * 2)
   }
@@ -64,7 +64,7 @@ const raycaster = new THREE.Raycaster();
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(
   75,
-  innerWidth / innerHeight,
+  innerWidth/innerHeight,
   0.1,
   1000
 )
@@ -100,6 +100,24 @@ const backLight = new THREE.DirectionalLight(0xffffff, 1)
 backLight.position.set(0, 0, -1)
 scene.add(backLight)
 
+const starGeometry=new THREE.BufferGeometry();
+const starMaterial=new THREE.PointsMaterial({
+  color:0xffffff
+});
+const starVerticies=[];
+for(let i=0;i<10000;i++){
+  const x=(Math.random()-0.5)* 2000
+  const y=(Math.random()-0.5)* 2000
+  const z=(Math.random()-0.5)* 2000
+
+  starVerticies.push(x,y,z)
+
+}
+
+starGeometry.setAttribute('position',new THREE.Float32BufferAttribute(starVerticies,3))
+
+const starts=new THREE.Points(starGeometry,starMaterial)
+scene.add(starts)
 
 let frame = 0
 const mouse = {
@@ -110,15 +128,22 @@ function animate() {
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
   raycaster.setFromCamera(mouse, camera)
-  frame=+0.01
-  const {array,originalPosition}=planeMesh.geometry.attributes.position
-  for(let i=0;i<array.length;i+3){
-    
+  frame+=0.01
+  const {array,originalPosition,randomValues}=planeMesh.geometry.attributes.position
+  for (let i = 0; i < array.length; i += 3) {
+    // x
+    array[i] = originalPosition[i] + Math.cos(frame + randomValues[i]) * 0.01
+
+    // y
+    array[i + 1] =originalPosition[i + 1] + Math.sin(frame + randomValues[i + 1]) * 0.001
+
   }
+
+
+  planeMesh.geometry.attributes.position.needsUpdate = true
 
   const intersects = raycaster.intersectObject(planeMesh)
   if(intersects.length > 0){
-    console.log("Inside intersects")
     const {color} =intersects[0].object.geometry.attributes
 
     //Vertice 1
@@ -191,3 +216,60 @@ addEventListener('mousemove', (event) => {
   mouse.y= -( event.clientY / innerHeight) * 2 + 1 
 })
 
+gsap.to('#name',{
+  opacity:1,
+  duration: 1.5,
+  y:0,
+  ease:"expo"
+})
+gsap.to('#subtitle',{
+  opacity:1,
+  duration: 1.5,
+  delay:0.3,
+  y:0,
+  ease:"expo"
+})
+gsap.to('#work',{
+  opacity:1,
+  duration: 1.5,
+  delay:0.6,
+  y:0,
+  ease:"expo"
+})
+
+
+document.querySelector('#work').addEventListener('click',(event)=>{
+  event.preventDefault();
+  console.log('go')
+  gsap.to('#container',{
+    opacity:0
+  })
+  gsap.to(camera.position,{
+    z:25,
+    ease:'power3.inOut',
+    duration:2
+  })
+  gsap.to(camera.rotation,{
+    x:1.51,
+    ease:'power3.inOut',
+    duration:1.5
+  })
+    gsap.to(camera.position,{
+    y:1000,
+    ease:'power3.in',
+    duration:1,
+    delay:2,
+    onComplete: ()=>{
+      window.location="https://v1.tailwindcss.com/components/buttons"
+    }
+  })
+
+})
+
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix()
+  renderer.setSize(innerWidth,innerHeight)
+ 
+   
+})
