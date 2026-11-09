@@ -583,19 +583,6 @@ textarea { min-height: 140px; resize: vertical; }
   background: var(--card);
 }
 
-.posts { display: grid; gap: 14px; padding: 28px 0 10px; }
-.post {
-  display: block;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 22px 22px 8px;
-  background: var(--card);
-}
-.post time { color: var(--faint); font-size: 13px; }
-.post h2 { margin: 6px 0 8px; font-size: 24px; letter-spacing: -0.03em; }
-.post .excerpt { color: var(--muted); margin-top: 0; }
-article.post p { color: var(--muted); }
-
 .resume {
   width: min(820px, 100%);
   margin: 10px auto 40px;

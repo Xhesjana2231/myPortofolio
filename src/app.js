@@ -7,7 +7,6 @@ import {
   experience,
   education,
   projects,
-  posts,
 } from "./data.js"
 
 const icons = {
@@ -18,7 +17,6 @@ const icons = {
   projects: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13 6l-2 12"/>',
   skills: '<path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M18 14l.7 1.8L20.5 17l-1.8.6L18 19.5l-.7-1.9L15.5 17l1.8-.6z"/>',
   contact: '<path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/>',
-  blog: '<path d="M6 4h9l3 3v13H6z"/><path d="M15 4v3h3M8 12h8M8 16h6"/>',
   resume: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
   sun: '<circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M4.8 4.8l1.4 1.4M17.8 17.8l1.4 1.4M19.2 4.8l-1.4 1.4M6.2 17.8l-1.4 1.4"/>',
   moon: '<path d="M16 3.5A8 8 0 1 0 20.5 14 6.5 6.5 0 0 1 16 3.5z"/>',
@@ -46,7 +44,6 @@ const nav = [
   ["projects", "Projects", "projects.html", "projects"],
   ["skills", "Skills", "skills.html", "skills"],
   ["contact", "Contact", "contact.html", "contact"],
-  ["blog", "Blog", "blog.html", "blog"],
 ]
 
 function roleClass(role) {
@@ -129,7 +126,6 @@ function pageIntro(title, text) {
 }
 
 function shell(page, main) {
-  const theme = document.documentElement.dataset.theme === "light" ? "light" : "dark"
   const links = nav
     .map(
       ([id, label, href, icon]) =>
@@ -146,7 +142,6 @@ function shell(page, main) {
     <nav class="nav-links" aria-label="Primary">${links}</nav>
     <div class="nav-actions">
       <button class="icon-btn menu-btn" type="button" aria-expanded="false" aria-label="Open menu">${svg("menu")}</button>
-      <button class="icon-btn" type="button" data-theme aria-label="Toggle color theme">${svg(theme === "light" ? "moon" : "sun")}</button>
       <a class="resume-btn" href="resume.html">${svg("resume")}<span>Resume</span></a>
     </div>
   </header>
@@ -358,35 +353,6 @@ function contactPage() {
   </section>`
 }
 
-function blogPage() {
-  const open = new URLSearchParams(location.search).get("post")
-  if (open) {
-    const post = posts.find((item) => item.slug === open)
-    if (!post) {
-      return `<section class="wrap empty"><h1>That note is not here.</h1><p><a href="blog.html">Back to the blog</a></p></section>`
-    }
-    document.title = `${post.title} — ${profile.name}`
-    return `<article class="wrap prose" style="padding-top:48px;max-width:720px">
-      <a class="back" href="blog.html">← Blog</a>
-      <p style="color:var(--faint);margin-bottom:0">${post.date}</p>
-      <h1>${post.title}</h1>
-      ${post.body.map((paragraph) => `<p>${paragraph}</p>`).join("")}
-    </article>`
-  }
-  return `${pageIntro("Blog", "Notes on building products, pages, and the unglamorous half of the work.")}
-  <section class="wrap posts">
-    ${posts
-      .map(
-        (post) => `<a class="post" href="blog.html?post=${post.slug}">
-          <time>${post.date}</time>
-          <h2>${post.title}</h2>
-          <p class="excerpt">${post.excerpt}</p>
-        </a>`
-      )
-      .join("")}
-  </section>`
-}
-
 function resumePage() {
   return `<section class="wrap" style="padding-top:36px">
     <div class="no-print" style="display:flex;justify-content:flex-end;margin-bottom:12px">
@@ -432,7 +398,6 @@ const pages = {
   projects: projectsPage,
   project: projectPage,
   contact: contactPage,
-  blog: blogPage,
   resume: resumePage,
 }
 
@@ -445,7 +410,6 @@ const titles = {
   projects: `Projects — ${profile.name}`,
   project: `Project — ${profile.name}`,
   contact: `Contact — ${profile.name}`,
-  blog: `Blog — ${profile.name}`,
   resume: `Resume — ${profile.name}`,
 }
 
@@ -456,14 +420,6 @@ function bind() {
     menu.setAttribute("aria-expanded", String(open))
     menu.setAttribute("aria-label", open ? "Close menu" : "Open menu")
     menu.innerHTML = svg(open ? "close" : "menu")
-  })
-
-  document.querySelector("[data-theme]")?.addEventListener("click", () => {
-    const next = document.documentElement.dataset.theme === "light" ? "dark" : "light"
-    document.documentElement.dataset.theme = next
-    localStorage.setItem("theme", next)
-    const button = document.querySelector("[data-theme]")
-    button.innerHTML = svg(next === "light" ? "moon" : "sun")
   })
 
   document.getElementById("print")?.addEventListener("click", () => window.print())

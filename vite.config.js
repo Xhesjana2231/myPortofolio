@@ -13,7 +13,6 @@ export default defineConfig({
         project: resolve(__dirname, "project.html"),
         skills: resolve(__dirname, "skills.html"),
         contact: resolve(__dirname, "contact.html"),
-        blog: resolve(__dirname, "blog.html"),
         resume: resolve(__dirname, "resume.html"),
       },
     },

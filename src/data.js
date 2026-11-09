@@ -5,7 +5,7 @@ export const profile = {
   role: "Full-Stack Developer & AI Engineer",
   initials: "XR",
   location: "München, Germany",
-  email: "",
+  email: "jessdevelopment22@gmail.com",
   headline: "Hi, I'm Xhesjana — Full-Stack Developer & AI Engineer",
   lede:
     "I build websites, online shops, and desktop applications with Vue.js, Nuxt 3, React, PHP, Laravel, and Golang, and I bring AI into the way software is designed, written, and shipped.",
@@ -164,7 +164,7 @@ export const experience = [
     type: "Contract",
     dates: "02/2025 — 06/2025",
     summary:
-      "Development of websites in the trading sector, built with Nuxt 3 and Vue.js, and integration of Strapi CMS.",
+      "Development of websites for trading projects, built with Vue.js and Nuxt 3. Building responsive, component-based interfaces for trading platforms and brokers, presenting markets, instruments, and account information clearly, and integrating Strapi CMS so the content team can manage pages without code changes.",
     tags: ["Nuxt 3", "Vue.js", "Tailwind CSS", "Bootstrap", "Strapi CMS"],
   },
   {
@@ -264,40 +264,26 @@ export const projects = [
       ["Output", "Showing the totals in the management system."],
     ],
   },
-]
-
-export const posts = [
   {
-    slug: "a-page-should-explain-the-work",
-    title: "A page should explain the work",
-    date: "Nov 2026",
-    excerpt: "A project grid is a table of contents. The page behind it has to say what was hard and what changed.",
-    body: [
-      "A title and a stack are not a case study. They tell someone the nouns. They do not tell them whether you made a decision.",
-      "I write four things before anything else: who it was for, how long it took, what the system actually did, and what I would do differently. If those four are thin, the project is not ready to be on the site.",
-      "The grid can stay short. The page behind it should be willing to be long.",
-    ],
-  },
-  {
-    slug: "quiet-interfaces",
-    title: "Quiet interfaces",
-    date: "Oct 2026",
-    excerpt: "Motion, color, and chrome are easy to add and hard to take back. Most of them should not survive the second pass.",
-    body: [
-      "The first version of almost every screen I make is too loud. An extra border, a hover that moves too far, a color that means nothing.",
-      "The second pass is removal. If a line does not group something, it goes. If a color does not mark a state, it goes. Motion stays only when it explains a change.",
-      "What is left is usually the version people trust, because it is the one that is not asking for attention.",
-    ],
-  },
-  {
-    slug: "the-unglamorous-half",
-    title: "The unglamorous half",
-    date: "Sep 2026",
-    excerpt: "The screen is the part people remember. The record, the job, and the deploy are the part that keeps the screen honest.",
-    body: [
-      "A board that cannot say what happened yesterday is a picture. I have started projects on the log and the schema, and let the screen follow.",
-      "Background work needs the same care as a button: a timeout, a stored input, and a way to see the failure. Silent success is how a pipeline becomes a rumor.",
-      "That half of the product rarely makes the thumbnail. It is still the half I want to be hired for.",
+    slug: "trading-websites",
+    name: "Trading Websites",
+    duration: "Professional project",
+    summary: "Websites for trading projects built with Vue.js and Nuxt 3, with content managed through Strapi CMS.",
+    roles: ["Frontend", "Vue.js / Nuxt 3"],
+    client: "Marketing Services Limited",
+    timeline: "02/2025 — 06/2025",
+    stack: ["Vue.js", "Nuxt 3", "Tailwind CSS", "Bootstrap", "Strapi CMS"],
+    overview:
+      "Trading brands needed fast, trustworthy websites that explain their platforms, markets, and account types, and that the marketing team could update without waiting on developers.",
+    detail:
+      "I built the frontends in Vue.js and Nuxt 3 as reusable components: page sections, pricing and account-type tables, instrument and market listings, and sign-up calls to action. Nuxt's server-side rendering keeps the pages fast and indexable, which matters for sites that depend on search traffic. The content comes from Strapi CMS, so landing pages, texts, and listings can be edited and published by the content team.",
+    reflection:
+      "Treating each page as a set of CMS-driven Vue components meant new trading pages and campaigns were mostly content work, not new code.",
+    steps: [
+      ["Components", "Reusable Vue.js components for page sections, tables, and calls to action."],
+      ["Nuxt 3", "Server-side rendering and routing for fast, SEO-friendly pages."],
+      ["Strapi CMS", "Connecting pages and listings to Strapi so content is managed without code changes."],
+      ["Styling", "Responsive layouts with Tailwind CSS and Bootstrap across devices."],
     ],
   },
 ]
